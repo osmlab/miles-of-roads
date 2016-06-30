@@ -1,7 +1,8 @@
-var cheapRuler = require('cheap-ruler');
+var cheapruler = require('cheap-ruler');
+var tilebelt = require('tilebelt');
 
 module.exports = function (sources, tile, write, done) {
-    var ruler = cheapRuler.fromTile(tile[1], tile[2], 'miles');
+    var ruler = cheapruler.fromTile(tile[1], tile[2], 'miles');
 
     var blacklist = [
         'footway',
@@ -22,10 +23,19 @@ module.exports = function (sources, tile, write, done) {
         miles += ruler.lineDistance(road.geometry.coordinates);
     });
 
-    if (miles) write(miles + '\n');
+    miles = parseFloat(miles.toFixed(2));
 
-    done(null, {
-        tile: tile,
-        miles: miles
-    });
+    if (miles) {
+        // reduce precision on the tilebelt output if the file is too large
+        tile = {
+            type: 'Feature',
+            geometry: tilebelt.tileToGeoJSON(tile),
+            properties: {
+                miles: miles
+            }
+        };
+        write(JSON.stringify(tile) + '\n');
+    }
+
+    done(null, miles);
 };
