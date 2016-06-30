@@ -1,0 +1,25 @@
+{
+  "name": "miles-of-roads",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/tape/bin/tape test/test.*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osmlab/miles-of-roads.git"
+  },
+  "author": "Aaron Lidman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/osmlab/miles-of-roads/issues"
+  },
+  "homepage": "https://github.com/osmlab/miles-of-roads#readme",
+  "devDependencies": {
+    "tape": "^4.6.0"
+  },
+  "dependencies": {
+    "tile-reduce": "^3.1.1"
+  }
+}
