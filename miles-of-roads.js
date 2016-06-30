@@ -23,15 +23,15 @@ module.exports = function (sources, tile, write, done) {
         miles += ruler.lineDistance(road.geometry.coordinates);
     });
 
-    miles = parseFloat(miles.toFixed(2));
+    var smallMiles = Math.floor(miles);
 
-    if (miles) {
+    if (smallMiles) {
         // reduce precision on the tilebelt output if the file is too large
         tile = {
             type: 'Feature',
             geometry: tilebelt.tileToGeoJSON(tile),
             properties: {
-                miles: miles
+                miles: smallMiles
             }
         };
         write(JSON.stringify(tile) + '\n');
