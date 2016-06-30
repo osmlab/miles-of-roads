@@ -14,7 +14,7 @@ tr({
         raw: false
     }]
 }).on('reduce', function(result) {
-    total += result;
+    total += result.roads;
 }).on('end', function() {
     var result = {
         total: total
