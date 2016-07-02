@@ -24,7 +24,6 @@ tr({
     var result = {
         min: min,
         max: max,
-        steps: steps
         total: total
     };
     console.log(JSON.stringify(result));
