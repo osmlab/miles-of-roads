@@ -24,12 +24,20 @@ module.exports = function (sources, tile, write, done) {
     });
 
     var smallMiles = Math.floor(miles);
-
     if (smallMiles) {
-        // reduce precision on the tilebelt output if the file is too large
+
+        var tileGeom = tilebelt.tileToGeoJSON(tile);
+        if (tileGeom.type == 'Polygon') {
+            tileGeom.coordinates[0] = tileGeom.coordinates[0].map(function(coord) {
+                coord[0] = Math.round(coord[0] * 10000000)/10000000;
+                coord[1] = Math.round(coord[1] * 10000000)/10000000;
+                return coord;
+            });
+        }
+
         tile = {
             type: 'Feature',
-            geometry: tilebelt.tileToGeoJSON(tile),
+            geometry: tileGeom,
             properties: {
                 miles: smallMiles
             }
