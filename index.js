@@ -1,6 +1,32 @@
 var tr = require('tile-reduce');
 var path = require('path');
 var fs = require('fs');
+var scale = require('d3-scale');
+
+var steps = 6;
+
+
+min = 0;
+max = process.argv[2];
+
+// ---
+
+var values = {};
+
+scale = scale.scaleLog()
+    .domain([1, steps])
+    .range([min, max]);
+
+for (var i = steps; i >= 0; i--) {
+    if (i === 0) break;
+    var previousMax = 0;
+    var max = Math.floor(scale(i));
+    values[i] = [previousMax, max];
+}
+
+console.log(JSON.stringify(values, null, 4));
+
+return 
 
 var total = 0;
 var min = 0;
@@ -21,11 +47,21 @@ tr({
     if (result < min) min = result;
     total += result;
 }).on('end', function() {
+    var values = {};
+
+    scale = scale.scaleLog()
+        .domain([1, steps])
+        .range([min, max]);
+
+    for (var i = steps; i >= 0; i--) {
+        values[i] = [];
+    };
+
     var result = {
         min: min,
         max: max,
-        steps: steps
         total: total
     };
+
     console.log(JSON.stringify(result));
 });
