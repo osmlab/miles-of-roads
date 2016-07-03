@@ -25,16 +25,7 @@ module.exports = function (sources, tile, write, done) {
 
     var smallMiles = Math.floor(miles);
     if (smallMiles) {
-
         var tileGeom = tilebelt.tileToGeoJSON(tile);
-        if (tileGeom.type == 'Polygon') {
-            tileGeom.coordinates[0] = tileGeom.coordinates[0].map(function(coord) {
-                coord[0] = Math.round(coord[0] * 10000000)/10000000;
-                coord[1] = Math.round(coord[1] * 10000000)/10000000;
-                return coord;
-            });
-        }
-
         tile = {
             type: 'Feature',
             geometry: tileGeom,
