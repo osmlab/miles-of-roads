@@ -18,18 +18,19 @@ module.exports = function (sources, tile, write, done) {
 
     var osm = sources.osm.osm;
     osm.features.filter(function(feature) {
-        return blacklist.indexOf(feature.properties.highway) > -1;
+        return feature.geometry.type === 'LineString';
+    }).filter(function(feature) {
+        return blacklist.indexOf(feature.properties.highway) === -1;
     }).forEach(function(road) {
         miles += ruler.lineDistance(road.geometry.coordinates);
     });
 
     var smallMiles = Math.floor(miles);
-
     if (smallMiles) {
-        // reduce precision on the tilebelt output if the file is too large
+        var tileGeom = tilebelt.tileToGeoJSON(tile);
         tile = {
             type: 'Feature',
-            geometry: tilebelt.tileToGeoJSON(tile),
+            geometry: tileGeom,
             properties: {
                 miles: smallMiles
             }
