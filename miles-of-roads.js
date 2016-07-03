@@ -20,7 +20,7 @@ module.exports = function (sources, tile, write, done) {
     osm.features.filter(function(feature) {
         return feature.geometry.type === 'LineString';
     }).filter(function(feature) {
-        return blacklist.indexOf(feature.properties.highway) > -1;
+        return blacklist.indexOf(feature.properties.highway) === -1;
     }).forEach(function(road) {
         miles += ruler.lineDistance(road.geometry.coordinates);
     });
